@@ -82,7 +82,6 @@ namespace IMN401 {
         glfwMakeContextCurrent(window);
         glfwSetWindowUserPointer(window, NULL);
 
-
         // Load all OpenGL functions using the glfw loader function
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             std::cerr << "Failed to initialize OpenGL context" << std::endl;
@@ -90,68 +89,75 @@ namespace IMN401 {
             return EXIT_FAILURE;
         }
 
-
         // shaders
         std::string strVS = readFile("shaders/triangle-vs.glsl");
         const GLchar* vsCode = strVS.c_str();
         std::string strFS = readFile("shaders/triangle-fs.glsl");
         const GLchar* fsCode = strFS.c_str();
 
-
-
         // Initialization
-        // =====================
-        // TODO: init buffers, shaders, etc.
-        // cf. https://www.khronos.org/files/opengl46-quick-reference-card.pdf
+        class Point {
+        public:
+            float x = 0;
+            float y = 0;
+        };
 
-        float sommets[3][2] = { {0.5,0.5} , {0,0}, {-0.5,-0.5} };
+        Point sommets[3];
+        float pointInitial = -0.5f;
 
-        GLuint bufferSommet;
-        glCreateBuffers(1, &bufferSommet);
-        glNamedBufferData(bufferSommet, sizeof(float) * sizeof(sommets), sommets, GL_STATIC_DRAW);
+        for (int i = 0; i < 3; ++i) {
+            sommets[i].x = pointInitial;
+            sommets[i].y = pointInitial;
+            pointInitial += 0.5f;
+        }
 
+        // Create Vertex Buffer
+        GLuint buffer;
+        glCreateBuffers(1, &buffer);
+
+        // Create Vertex Array
         GLuint VA;
-        glCreateVertexArrays(1, &VA);   
+        glCreateVertexArrays(1, &VA);
 
-        glBindBuffer(VA, bufferSommet);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(Point), sommets, GL_STATIC_DRAW);
 
+        // Program
+        GLuint vsProgId = glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &vsCode);
+        GLuint fsProgId = glCreateShaderProgramv(GL_FRAGMENT_SHADER, 1, &fsCode);
 
-        GLuint vertProgId = glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &vsCode);
-        GLuint fragProgId = glCreateShaderProgramv(GL_FRAGMENT_SHADER, 1, &fsCode);
+        printProgramError(vsProgId);
+        printProgramError(fsProgId);
 
+        // Pipeline
+        GLuint pipeline;
+        glCreateProgramPipelines(1, &pipeline);
+        glUseProgramStages(pipeline, GL_VERTEX_SHADER_BIT, vsProgId);
+        glUseProgramStages(pipeline, GL_FRAGMENT_SHADER, fsProgId);
+        glValidateProgramPipeline(pipeline);
+        printPipelineError(pipeline);
+
+        glBindVertexArray(VA);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)0);
+        glEnableVertexAttribArray(0);
 
         if (glGetError() != GL_NO_ERROR) {
             std::cerr << "OpenGL error" << std::endl;
             return EXIT_FAILURE;
         }
-        // ====================
-
-
-
-     
-
 
         // Rendering loop
-        while (!glfwWindowShouldClose(window))
-        {
-            // Handle events
+        while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
-
-         
-            // ==================
-            // TODO: render here !
-
-
-            // ==================
-
             glfwSwapBuffers(window);
         }
 
         // Clean up
         glfwTerminate();
-
         return EXIT_SUCCESS;
     }
+
 }
 
 int main()
