@@ -104,10 +104,20 @@ namespace IMN401 {
         // TODO: init buffers, shaders, etc.
         // cf. https://www.khronos.org/files/opengl46-quick-reference-card.pdf
 
+        float sommets[3][2] = { {0.5,0.5} , {0,0}, {-0.5,-0.5} };
+
+        GLuint bufferSommet;
+        glCreateBuffers(1, &bufferSommet);
+        glNamedBufferData(bufferSommet, sizeof(float) * sizeof(sommets), sommets, GL_STATIC_DRAW);
+
+        GLuint VA;
+        glCreateVertexArrays(1, &VA);   
+
+        glBindBuffer(VA, bufferSommet);
 
 
-
-   
+        GLuint vertProgId = glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &vsCode);
+        GLuint fragProgId = glCreateShaderProgramv(GL_FRAGMENT_SHADER, 1, &fsCode);
 
 
         if (glGetError() != GL_NO_ERROR) {
