@@ -26,8 +26,8 @@ protected:
     GLint l_Time = -1, l_Amp = -1, l_Freq = -1;
 
     float m_time = 0.0f;
-    float m_amp = 0.05f;
-    float m_freq = 6.283185f;
+    float m_amp = 0.01f;
+    float m_freq = 0.5f;
 };
 
 #endif

@@ -40,7 +40,14 @@ void BaseMaterial::animate(Node *o, const float elapsedTime) {
     - Une matrice 4X4 se transmet grace a glProgramUniformMatrix4fv
     ***********************************************/
 
-    m_time += elapsedTime * 0.001f;
+    m_time += elapsedTime;
+
+    std::cout << "m_time :";
+    std::cout << m_time;
+    std::cout << "\n";
+    std::cout << "elapsed time :";
+    std::cout << elapsedTime;
+    std::cout << "\n";
 
     glm::mat4 Model = o->frame()->getModelMatrix();
     glm::mat4 View = scene->camera()->getViewMatrix();
