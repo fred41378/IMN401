@@ -54,9 +54,6 @@ void BaseMaterial::animate(Node *o, const float elapsedTime) {
     // Deformation du bunny
     if (elapsedTime < 10) m_time += elapsedTime;
 
-    std::cout << elapsedTime;
-    std::cout << "\n";
-
     if (l_Time >= 0) glProgramUniform1f(vpId, l_Time, m_time);
     if (l_Amp >= 0) glProgramUniform1f(vpId, l_Amp, m_amp);
     if (l_Freq >= 0) glProgramUniform1f(vpId, l_Freq, m_freq);
