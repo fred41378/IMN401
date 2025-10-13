@@ -3,6 +3,7 @@
 #include "Scene.h"
 
 #include "Materials/BaseMaterial/BaseMaterial.h"
+#include "Materials/RotationMaterial/RotationMaterial.h"
 
 #include "Texture2D.h"
 
@@ -24,6 +25,21 @@ bool EngineGL::init() {
     bunny->frame()->scale(glm::vec3(30.0));
     bunny->setMaterial(material);
     scene->getSceneNode()->adopt(bunny);
+
+
+    //Rotation de sphere
+    Node *A = new Node("A");
+    A->setMaterial(new RotationMaterial("RotA"));
+    A->frame()->scale(glm::vec3(1.0f / 30.0f));
+    bunny->adopt(A);
+
+    Node *L = new Node("SphereL");
+    L->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
+    L->setMaterial(new BaseMaterial("BaseMatSphere"));
+    A->adopt(L);
+    L->frame()->translate(glm::vec3(5.5f, 0.0f, 0.0f));
+
+    L->frame()->scale(glm::vec3(2.0f));
 
     setupEngine();
     return (true);

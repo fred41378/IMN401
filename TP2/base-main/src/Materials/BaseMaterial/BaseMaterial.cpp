@@ -40,14 +40,6 @@ void BaseMaterial::animate(Node *o, const float elapsedTime) {
     - Une matrice 4X4 se transmet grace a glProgramUniformMatrix4fv
     ***********************************************/
 
-    if (elapsedTime < 10) m_time += elapsedTime;
-
-    std::cout << "m_time :";
-    std::cout << m_time;
-    std::cout << "\n";
-    std::cout << "elapsed time :";
-    std::cout << elapsedTime;
-    std::cout << "\n";
 
     glm::mat4 Model = o->frame()->getModelMatrix();
     glm::mat4 View = scene->camera()->getViewMatrix();
@@ -57,6 +49,13 @@ void BaseMaterial::animate(Node *o, const float elapsedTime) {
     if (l_Model >= 0) glProgramUniformMatrix4fv(vpId, l_Model, 1, GL_FALSE, glm::value_ptr(Model));
     if (l_View >= 0) glProgramUniformMatrix4fv(vpId, l_View, 1, GL_FALSE, glm::value_ptr(View));
     if (l_Proj >= 0) glProgramUniformMatrix4fv(vpId, l_Proj, 1, GL_FALSE, glm::value_ptr(Proj));
+
+
+    // Deformation du bunny
+    if (elapsedTime < 10) m_time += elapsedTime;
+
+    std::cout << elapsedTime;
+    std::cout << "\n";
 
     if (l_Time >= 0) glProgramUniform1f(vpId, l_Time, m_time);
     if (l_Amp >= 0) glProgramUniform1f(vpId, l_Amp, m_amp);
