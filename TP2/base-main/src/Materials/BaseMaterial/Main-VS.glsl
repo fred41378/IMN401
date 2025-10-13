@@ -14,7 +14,7 @@ layout(location = 2) in vec3 Normal;
 out vec3 vertexColor;
 
 void main() {
-    float disp = u_amp * sin(6.28318530718 * u_freq * u_time);
+    float disp = u_amp * sin(6.28318530718 * u_freq/1000 * u_time);
     vec3 displacedPos = Position + normalize(Normal) * disp;
 
     gl_Position = Proj * View * Model * vec4(displacedPos, 1.0);

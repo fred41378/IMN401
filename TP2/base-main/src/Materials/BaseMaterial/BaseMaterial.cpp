@@ -40,7 +40,7 @@ void BaseMaterial::animate(Node *o, const float elapsedTime) {
     - Une matrice 4X4 se transmet grace a glProgramUniformMatrix4fv
     ***********************************************/
 
-    m_time += elapsedTime;
+    if (elapsedTime < 10) m_time += elapsedTime;
 
     std::cout << "m_time :";
     std::cout << m_time;
