@@ -22,6 +22,12 @@ protected:
     GLProgram *fp;
 
     GLuint l_View, l_Proj, l_Model; // location of uniforms
+
+    GLint l_Time = -1, l_Amp = -1, l_Freq = -1;
+
+    float m_time = 0.0f;
+    float m_amp = 0.05f;
+    float m_freq = 6.283185f;
 };
 
 #endif
