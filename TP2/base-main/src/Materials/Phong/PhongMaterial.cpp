@@ -3,7 +3,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 PhongMaterial::PhongMaterial(std::string name) : MaterialGL(std::move(name)) {
-    // Point to your actual shader paths
     vp = new GLProgram(MaterialPath + "BaseMaterial/Main-VS.glsl", GL_VERTEX_SHADER);
     fp = new GLProgram(MaterialPath + "BaseMaterial/Main-FS.glsl", GL_FRAGMENT_SHADER);
 
