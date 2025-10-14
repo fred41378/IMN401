@@ -4,10 +4,10 @@ in vec3 vV;
 in vec3 vN;
 
 uniform vec3  u_objectColor;
-uniform float u_ka;      // ambient
+uniform float u_ka;      // ambiente
 uniform float u_kd;      // diffuse
-uniform float u_ks;      // spec
-uniform float u_shiny;   // exposant
+uniform float u_ks;      // speculaire
+uniform float u_shiny;   // Another Rare pokemon !
 
 out vec4 FragColor;
 
