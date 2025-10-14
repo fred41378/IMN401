@@ -1,4 +1,3 @@
-#pragma once
 #include "MaterialGL.h"
 #include <glm/glm.hpp>
 #include <iostream>
@@ -8,7 +7,7 @@ public:
     explicit RotationMaterial(std::string name = "")
         : MaterialGL(std::move(name)) {}
 
-    void render(Node * /*o*/) override {}
+    void render(Node *) override {}
 
     void animate(Node *o, const float elapsedTime) override {
         const float dt = elapsedTime;
