@@ -16,6 +16,6 @@ public:
         o->frame()->rotate(glm::vec3(0, 1, 0), deltaAngle);
     }
 
-    float m_speed = 0.003f;
+    float m_speed = 0.002f;
 
 };

@@ -19,34 +19,39 @@ bool EngineGL::init() {
 
     // Création d'un materiau de Base
     //BaseMaterial *material = new BaseMaterial("IMN401-TP2");
-    PhongMaterial *phongMat = new PhongMaterial("PhongBunny");
+    PhongMaterial *phongMatBunny = new PhongMaterial("PhongBunny");
+    PhongMaterial *phongMatSol = new PhongMaterial("phongSol");
 
     // d'un objet, méthode détaillée
     Node *bunny = scene->getNode("Bunny");
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));
     bunny->frame()->scale(glm::vec3(30.0));
-    bunny->setMaterial(phongMat);
+    bunny->setMaterial(phongMatBunny);
     scene->getSceneNode()->adopt(bunny);
 
-    Node *Lumiere = scene->getNode("Lumiere");
-    Lumiere->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
-    Lumiere->setMaterial(new BaseMaterial("BaseMatSphere"));
-    scene->getSceneNode()->adopt(Lumiere);
-
-
-    //Rotation de sphere
-    /*Node *A = new Node("A");
+    //Rotation de sphere lumineuse
+    Node *A = new Node("A");
     A->setMaterial(new RotationMaterial("RotA"));
     A->frame()->scale(glm::vec3(1.0f / 30.0f));
     bunny->adopt(A);
 
-    Node *L = new Node("SphereL");
-    L->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
-    L->setMaterial(new BaseMaterial("BaseMatSphere"));
-    A->adopt(L);
-    L->frame()->translate(glm::vec3(5.5f, 0.0f, 0.0f));
+    Node *Lumiere = scene->getNode("Lumiere");
+    Lumiere->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
+    Lumiere->setMaterial(new BaseMaterial("BaseMatSphere"));
+    A->adopt(Lumiere);
+    Lumiere->frame()->translate(glm::vec3(6.0f, 2.0f, 0.0f));
 
-    L->frame()->scale(glm::vec3(2.0f));*/
+    Lumiere->frame()->scale(glm::vec3(1.5f));
+
+    //sol
+    Node *sol = scene->getNode("Sol");
+    sol->setModel(scene->m_Models.get<ModelGL>(ObjPath + "wall.obj"));
+    sol->setMaterial(phongMatSol);
+    phongMatSol->setColor(glm::vec3(0.0f, 1.0, 1.0f));
+    sol->frame()->scale(glm::vec3(6.0f, 2.0f, 6.0f));
+    sol->frame()->translate(glm::vec3(0.0f, -1.15f, 0.0f));
+
+    scene->getSceneNode()->adopt(sol);
 
     setupEngine();
     return (true);
