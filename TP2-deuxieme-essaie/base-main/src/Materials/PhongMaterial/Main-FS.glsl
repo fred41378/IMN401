@@ -25,8 +25,17 @@ void main() {
     for(int i = 0; i < u_nbLumiere; ++i){
         vec3 L = normalize(Vl[i]);
         float NL = max(dot(N, L), 0);
-
-        vec3 difus = u_kd * NL * u_objColor;
+        vec3 d_color = u_objColor;
+        if(i == 1){
+        d_color = vec3(1.0,0.0,0.0);
+        }
+        if(i == 2){
+        d_color = vec3(0.0,1.0,0.0);
+        }
+        if(i == 3){
+        d_color = vec3(0.0,0.0,1.0);
+        }
+        vec3 difus = u_kd * NL * d_color;
 
         vec3 R = reflect(-L, N);
         float RV = max(dot(R, V), 0.0);

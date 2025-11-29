@@ -27,7 +27,7 @@ bool EngineGL::init() {
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));
     bunny->frame()->scale(glm::vec3(30.0));
     bunny->setMaterial(phongMatBunny);
-    phongMatBunny->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+    phongMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
     scene->getSceneNode()->adopt(bunny);
 
     Node *L1 = scene->getNode("Light1");
