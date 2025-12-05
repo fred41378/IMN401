@@ -24,11 +24,13 @@ bool EngineGL::init() {
     PhongMaterial *phongMatSol = new PhongMaterial("phongMatSol");
 
     //Textures
-    Texture2D *textureBunny = new Texture2D("./Objets/Textures/Bunny1.png");
+    Texture2D *textureBunny1 = new Texture2D(ObjPath + "Textures/Bunny1.png");
+    Texture2D *textureBunny2 = new Texture2D(ObjPath + "Textures/Bunny2.png");
 
     // d'un objet, méthode détaillée
-    //textureMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
-    textureMatBunny->setTexture(textureBunny);
+    textureMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    textureMatBunny->setTexture1(textureBunny1);
+    textureMatBunny->setTexture2(textureBunny2);
     Node *bunny = scene->getNode("Bunny");
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));
     bunny->frame()->scale(glm::vec3(30.0));

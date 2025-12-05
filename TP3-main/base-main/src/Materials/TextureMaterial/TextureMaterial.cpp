@@ -30,9 +30,7 @@ TextureMaterial::TextureMaterial(std::string name) : MaterialGL(name) {
     l_posCam = glGetUniformLocation(vpId, "u_posCam");
     l_id = glGetUniformLocation(vpId, "u_id");
 
-    GLuint l_sampler2d = glGetUniformLocation(fpId, "T");
-    glBindTextureUnit(0, m_texture->getId());
-    glProgramUniform1i(fpId, l_sampler2d, 0);
+    l_sampler2d_1 = glGetUniformLocation(fpId, "T1");
 }
 
 TextureMaterial::~TextureMaterial() {}
@@ -49,8 +47,11 @@ void TextureMaterial::setColor(const glm::vec3 &rgb) {
     m_objColor = rgb;
 }
 
-void TextureMaterial::setTexture( Texture2D *texture) {
-    m_texture = texture;
+void TextureMaterial::setTexture1( Texture2D *texture) {
+    m_texture1 = texture;
+}
+void TextureMaterial::setTexture2(Texture2D *texture) {
+    m_texture2 = texture;
 }
 
 void TextureMaterial::animate(Node *o, const float elapsedTime) {
@@ -116,5 +117,8 @@ void TextureMaterial::animate(Node *o, const float elapsedTime) {
     glProgramUniform3fv(vpId, l_posLapin, 1, glm::value_ptr(posLapin));
 
     //Texture 
-
+    glBindTextureUnit(0, m_texture1->getId());
+    if (l_sampler2d_1 >= 0) glProgramUniform1i(fpId, l_sampler2d_1, 0);
+    glBindTextureUnit(0, m_texture2->getId());
+    if (l_sampler2d_2 >= 0) glProgramUniform1i(fpId, l_sampler2d_2, 0);
 }

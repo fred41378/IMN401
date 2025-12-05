@@ -16,27 +16,32 @@ uniform float u_ks;
 uniform float u_shiny;
 uniform vec3 u_objColor;
 
-uniform sampler2D T;
+uniform sampler2D T1;
+uniform sampler2D T2;
 
 void main() {
 
     vec3 N = normalize(Vn);
     vec3 V = normalize(Vv);
-
-    vec3 ambiant = u_ka * vec3(0.0,0.0,0.0);
-
     vec3 L = normalize(Vl);
+
+    vec4 texture1 = texture(T1, uv);
+    vec4 texture2 = texture(T2, uv);
+
+    vec4 textureMix = mix(texture1, texture2, clamp(0, 0.0, 0.0));
+
+    vec3 albedo = textureMix.rgb * u_objColor;
+
+    vec3 ambiant = u_ka * albedo;
+
     float NL = max(dot(N, L), 0);
-    vec3 difus = u_kd * NL * u_objColor;
+    vec3 difus = u_kd * NL * albedo;
    
     vec3 R = reflect(-L, N);
     float RV = max(dot(R, V), 0.0);
     float specPow = pow(RV, u_shiny);
     vec3 specular = u_ks * specPow * vec3(1.0);
 
-        
-    vec4 textureBuuny1 = texture(T, uv);
-    difus = textureBuuny1.xyz;
 
     vec3 result = ambiant + difus + specular;
 

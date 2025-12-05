@@ -15,7 +15,8 @@ public:
 
     void setColor(const glm::vec3 &rgb);
 
-    void setTexture(Texture2D *texture);
+    void setTexture1(Texture2D *texture);
+    void setTexture2(Texture2D *texture);
 
     glm::vec3 m_objColor = glm::vec3(1.0f, 0.0f, 0.0f);
     float m_ka = 0.2f;
@@ -23,7 +24,8 @@ public:
     float m_ks = 1.0f;
     float m_shiny = 64.0f;
     float m_time = 0.0f;
-    Texture2D *m_texture = new Texture2D("./Objets/Textures/Bunny1.png");
+    Texture2D *m_texture1;
+    Texture2D *m_texture2;
 
 protected:
     GLProgram *vp;
@@ -40,5 +42,7 @@ protected:
     GLuint l_posLum = -1, l_posCam = -1;
 
     GLuint l_nbLumiere = -1;
+
+    GLuint l_sampler2d_1 = -1, l_sampler2d_2 = -1;
 
 };
