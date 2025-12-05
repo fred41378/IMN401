@@ -48,11 +48,6 @@ bool EngineGL::init() {
     L3->frame()->translate(glm::vec3(0.0f, 2.0f, 10.0f));
     L3->frame()->scale(glm::vec3(2.0f));
 
-    Node *L4 = scene->getNode("Light4");
-    L4->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
-    L4->setMaterial(new PhongMaterial("Lumiere3"));
-    L4->frame()->translate(glm::vec3(0.0f, 2.0f, -10.0f));
-    L4->frame()->scale(glm::vec3(2.0f));
 
     Node *A = new Node("A");
     A->setMaterial(new RotationMaterial("RotA"));
@@ -61,7 +56,6 @@ bool EngineGL::init() {
     A->adopt(L1);
     A->adopt(L2);
     A->adopt(L3);
-    A->adopt(L4);
 
     // sol
     Node *sol = scene->getNode("Sol");

@@ -15,7 +15,7 @@ layout(location = 2) in vec3 Normal;
 
 out vec3 vertexColor;
 out vec3 Vv;
-out vec3 Vl[4];
+out vec3 Vl[3];
 out vec3 Vn;
 
 uniform float u_time;
@@ -30,9 +30,9 @@ uniform vec3 u_objColor;
 
 uniform float u_id;
 
+uniform vec3 u_posLapin;
 
-
-uniform vec3 u_posLum[4];
+uniform vec3 u_posLum[3];
 
 uniform vec3 u_posCam;
 
@@ -46,13 +46,15 @@ void main() {
     Vn = Normal;
     vec3 N = normalize(Normal);
 
-    if(u_id == 1.0){
-        float disp = 0.05 * sin(3.14 * 0.5/1000.0 * u_time);
+    float distance = (length(u_posLapin - Position));
+
+    if(distance > 2.0 && u_id == 1.0){
+        float disp = 0.5 * sin(3.14 * 0.07/1000.0 * u_time);
 
         vec3 horizDir = vec3(Position.x, 0.0, Position.z);
         float len = length(horizDir);
 
-        vec3 displacedPos = Position + horizDir * disp;
+        vec3 displacedPos = Position + N * disp;
         gl_Position = Proj * View * Model * vec4(displacedPos, 1.0);
     }
     else{

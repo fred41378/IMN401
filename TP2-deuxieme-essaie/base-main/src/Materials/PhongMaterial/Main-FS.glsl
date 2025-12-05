@@ -4,7 +4,7 @@ layout(location = 0) out vec4 Color;
 layout(location = 2) out vec3 Normal;
 
 in vec3 vertexColor;
-in vec3 Vl[4];
+in vec3 Vl[3];
 in vec3 Vv;
 in vec3 Vn;
 
@@ -26,13 +26,13 @@ void main() {
         vec3 L = normalize(Vl[i]);
         float NL = max(dot(N, L), 0);
         vec3 d_color = u_objColor;
-        if(i == 1){
+        if(i == 0){
         d_color = vec3(1.0,0.0,0.0);
         }
-        if(i == 2){
+        if(i == 1){
         d_color = vec3(0.0,1.0,0.0);
         }
-        if(i == 3){
+        if(i == 2){
         d_color = vec3(0.0,0.0,1.0);
         }
         vec3 difus = u_kd * NL * d_color;

@@ -80,18 +80,16 @@ void PhongMaterial::animate(Node *o, const float elapsedTime) {
     Node *L1 = scene->getNode("Light1");
     Node *L2 = scene->getNode("Light2");
     Node *L3 = scene->getNode("Light3");
-    Node *L4 = scene->getNode("Light4");
 
     lights_obj[0] = o->frame()->convertPtFrom(P, L1->frame());
     lights_obj[1] = o->frame()->convertPtFrom(P, L2->frame());
     lights_obj[2] = o->frame()->convertPtFrom(P, L3->frame());
-    lights_obj[3] = o->frame()->convertPtFrom(P, L4->frame());
 
     if (l_posLum >= 0)
-        glProgramUniform3fv(vpId, l_posLum, 4, glm::value_ptr(lights_obj[0]));
+        glProgramUniform3fv(vpId, l_posLum, 3, glm::value_ptr(lights_obj[0]));
 
     if (l_nbLumiere >= 0)
-        glProgramUniform1i(fpId, l_nbLumiere, 4);
+        glProgramUniform1i(fpId, l_nbLumiere, 3);
 
     glm::vec3 p0 = glm::vec3(0.0f);
     glm::vec3 pCam = o->frame()->convertPtFrom(p0, scene->camera()->frame());
@@ -99,9 +97,19 @@ void PhongMaterial::animate(Node *o, const float elapsedTime) {
     
     float m_id = 0.0f;
 
-    if (o->getName() == "Sol") {
+    /*if (o->getName() == "Sol") {
         m_id = 1.0f;
-    }
+    }*/
 
     if (l_id >= 0) glProgramUniform1f(vpId, l_id, m_id);
+
+    // anais
+
+    glm::vec3 originLapin = glm::vec3(0, 0, 0);
+    glm::vec3 posLapin = o->frame()->convertPtFrom(originLapin, scene->getNode("Bunny")->frame());
+    GLuint l_posLapin = glGetUniformLocation(vpId, "u_posLapin");
+    glProgramUniform3fv(vpId, l_posLapin, 1, glm::value_ptr(posLapin));
+
+
+
 }
