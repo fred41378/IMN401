@@ -11,6 +11,8 @@
 #include "FrameBufferObject.h"
 
 #include "Effects/Display/Display.h"
+#include "Effects/Flou/Flou.h"
+#include "Effects/Bloom/Bloom.h"
 
 class EngineGL {
 public:
@@ -51,5 +53,7 @@ protected:
     // For TP 4
     FrameBufferObject *myFBO;
     Display *display;
+    Flou *flou;
+    Bloom *bloom;
 };
 #endif

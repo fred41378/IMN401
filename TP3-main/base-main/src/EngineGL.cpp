@@ -100,6 +100,9 @@ bool EngineGL::init() {
     myFBO = new FrameBufferObject("myFBO", m_Width, m_Height);
     display = new Display("Display");
     
+    //Flou
+    flou = new Flou("Flou", m_Width, m_Height);
+    bloom = new Bloom("Bloom", m_Width, m_Height);
 
     setupEngine();
     return (true);
@@ -113,7 +116,9 @@ void EngineGL::render() {
     for (unsigned int i = 0; i < allNodes->nodes.size(); i++)
         allNodes->nodes[i]->render();
     myFBO->disable();
-    display->apply(myFBO, NULL);
+    //display->apply(myFBO, NULL);
+    //flou->apply(myFBO, NULL);
+    bloom->apply(myFBO, NULL);
 }
 
 void EngineGL::animate(const float elapsedTime) {
