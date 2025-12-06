@@ -25,9 +25,9 @@ public:
     float m_ks = 1.0f;
     float m_shiny = 64.0f;
     float m_time = 0.0f;
-    Texture2D *m_texture1;
-    Texture2D *m_texture2;
-    Texture2D *m_normal;
+    Texture2D *m_texture1 = nullptr;
+    Texture2D *m_texture2 = nullptr;
+    Texture2D *m_normal = nullptr;
 
 protected:
     GLProgram *vp;
@@ -46,5 +46,7 @@ protected:
     GLuint l_nbLumiere = -1;
 
     GLuint l_sampler2d_1 = -1, l_sampler2d_2 = -1, l_sampler2d_N = -1;
+    GLuint l_hasTex2 = -1;
+    GLuint l_hasNormal = -1;
 
 };

@@ -17,5 +17,5 @@ public:
 protected:
     GLProgram *vp;
     GLProgram *fp;
-    GLuint l_Texture;
+    GLuint l_Texture = -1;
 };

@@ -33,6 +33,9 @@ TextureMaterial::TextureMaterial(std::string name) : MaterialGL(name) {
     l_sampler2d_1 = glGetUniformLocation(fpId, "T1");
     l_sampler2d_2 = glGetUniformLocation(fpId, "T2");
     l_sampler2d_N = glGetUniformLocation(fpId, "NormalMap");
+
+    l_hasTex2 = glGetUniformLocation(fpId, "u_hasTex2");
+    l_hasNormal = glGetUniformLocation(fpId, "u_hasNormal");
 }
 
 TextureMaterial::~TextureMaterial() {}
@@ -45,13 +48,24 @@ void TextureMaterial::render(Node *o) {
     const GLuint fpId = fp->getId();
 
     // Texture
-    glBindTextureUnit(0, m_texture1->getId());
-    if (l_sampler2d_1 >= 0) glProgramUniform1i(fpId, l_sampler2d_1, 0);
-    glBindTextureUnit(1, m_texture2->getId());
-    if (l_sampler2d_2 >= 0) glProgramUniform1i(fpId, l_sampler2d_2, 1);
-    glBindTextureUnit(2, m_normal->getId());
-    if (l_sampler2d_N >= 0) glProgramUniform1i(fpId, l_sampler2d_N, 2);
+    if (m_texture1 && l_sampler2d_1 >= 0) {
+        glBindTextureUnit(0, m_texture1->getId());
+        glProgramUniform1i(fpId, l_sampler2d_1, 0);
+    }
 
+    bool hasTex2 = (m_texture2 != nullptr);
+    if (l_hasTex2 >= 0) glProgramUniform1i(fpId, l_hasTex2, hasTex2 ? 1 : 0);
+    if (hasTex2 && l_sampler2d_2 >= 0) {
+        glBindTextureUnit(1, m_texture2->getId());
+        glProgramUniform1i(fpId, l_sampler2d_2, 1);
+    }
+    bool hasNormal = (m_normal != nullptr);
+    if (l_hasNormal >= 0) glProgramUniform1i(fpId, l_hasNormal, hasNormal ? 1 : 0);
+    
+    if (hasNormal && l_sampler2d_N >= 0) {
+        glProgramUniform1i(fpId, l_sampler2d_N, 2);
+        glBindTextureUnit(2, m_normal->getId());
+    }
     o->drawGeometry(GL_TRIANGLES);
     m_ProgramPipeline->release();
 }
