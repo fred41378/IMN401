@@ -18,13 +18,13 @@ Bloom::Bloom(std::string name, int w, int h) : EffectGL(name) {
     m_ProgramPipeline->link();
     m_ProgramPipeline->printInfoLog();
 
-    l_src_extract = glGetUniformLocation(fpExtract->getId(), "u_src");
-    l_threshold = glGetUniformLocation(fpExtract->getId(), "u_threshold");
+    l_src = glGetUniformLocation(fpExtract->getId(), "u_src");
+    l_limite = glGetUniformLocation(fpExtract->getId(), "u_limite");
     l_softness = glGetUniformLocation(fpExtract->getId(), "u_softness");
 
     l_src_combine = glGetUniformLocation(fpCombine->getId(), "u_src");
     l_bloom_combine = glGetUniformLocation(fpCombine->getId(), "u_bloom");
-    l_intensity = glGetUniformLocation(fpCombine->getId(), "u_intensity");
+    l_intensite = glGetUniformLocation(fpCombine->getId(), "u_intensite");
 
     FBO1 = new FrameBufferObject("Bloom_FBO1", w, h);
     FBO2 = new FrameBufferObject("Bloom_FBO2", w, h);
@@ -42,8 +42,8 @@ void Bloom::apply(FrameBufferObject *src, FrameBufferObject *target) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_ProgramPipeline->useProgramStage(fpExtract, GL_FRAGMENT_SHADER_BIT);
-    bindTex(fpExtract->getId(), l_src_extract, src->getColorTexture(), 0);
-    if (l_threshold >= 0) glProgramUniform1f(fpExtract->getId(), l_threshold, m_threshold);
+    bindTex(fpExtract->getId(), l_src, src->getColorTexture(), 0);
+    if (l_limite >= 0) glProgramUniform1f(fpExtract->getId(), l_limite, m_limite);
     if (l_softness >= 0) glProgramUniform1f(fpExtract->getId(), l_softness, m_softness);
 
     m_ProgramPipeline->bind();
@@ -61,7 +61,7 @@ void Bloom::apply(FrameBufferObject *src, FrameBufferObject *target) {
 
     bindTex(fpCombine->getId(), l_src_combine, src->getColorTexture(), 0);
     bindTex(fpCombine->getId(), l_bloom_combine, FBO2->getColorTexture(), 1);
-    if (l_intensity >= 0) glProgramUniform1f(fpCombine->getId(), l_intensity, m_intensity);
+    if (l_intensite >= 0) glProgramUniform1f(fpCombine->getId(), l_intensite, m_intensite);
 
     m_ProgramPipeline->bind();
     drawQuad();
