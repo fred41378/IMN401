@@ -31,6 +31,8 @@ TextureMaterial::TextureMaterial(std::string name) : MaterialGL(name) {
     l_id = glGetUniformLocation(vpId, "u_id");
 
     l_sampler2d_1 = glGetUniformLocation(fpId, "T1");
+    l_sampler2d_2 = glGetUniformLocation(fpId, "T2");
+    l_sampler2d_N = glGetUniformLocation(fpId, "NormalMap");
 }
 
 TextureMaterial::~TextureMaterial() {}
@@ -38,6 +40,17 @@ TextureMaterial::~TextureMaterial() {}
 void TextureMaterial::render(Node *o) {
 
     m_ProgramPipeline->bind();
+
+    const GLuint vpId = vp->getId();
+    const GLuint fpId = fp->getId();
+
+    // Texture
+    glBindTextureUnit(0, m_texture1->getId());
+    if (l_sampler2d_1 >= 0) glProgramUniform1i(fpId, l_sampler2d_1, 0);
+    glBindTextureUnit(1, m_texture2->getId());
+    if (l_sampler2d_2 >= 0) glProgramUniform1i(fpId, l_sampler2d_2, 1);
+    glBindTextureUnit(2, m_normal->getId());
+    if (l_sampler2d_N >= 0) glProgramUniform1i(fpId, l_sampler2d_N, 2);
 
     o->drawGeometry(GL_TRIANGLES);
     m_ProgramPipeline->release();
@@ -52,6 +65,9 @@ void TextureMaterial::setTexture1( Texture2D *texture) {
 }
 void TextureMaterial::setTexture2(Texture2D *texture) {
     m_texture2 = texture;
+}
+void TextureMaterial::setNormal(Texture2D *normal) {
+    m_normal = normal;
 }
 
 void TextureMaterial::animate(Node *o, const float elapsedTime) {
@@ -116,9 +132,5 @@ void TextureMaterial::animate(Node *o, const float elapsedTime) {
     GLuint l_posLapin = glGetUniformLocation(vpId, "u_posLapin");
     glProgramUniform3fv(vpId, l_posLapin, 1, glm::value_ptr(posLapin));
 
-    //Texture 
-    glBindTextureUnit(0, m_texture1->getId());
-    if (l_sampler2d_1 >= 0) glProgramUniform1i(fpId, l_sampler2d_1, 0);
-    glBindTextureUnit(0, m_texture2->getId());
-    if (l_sampler2d_2 >= 0) glProgramUniform1i(fpId, l_sampler2d_2, 0);
+    
 }

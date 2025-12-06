@@ -18,17 +18,19 @@ uniform vec3 u_objColor;
 
 uniform sampler2D T1;
 uniform sampler2D T2;
+uniform sampler2D NormalMap;
 
 void main() {
-
-    vec3 N = normalize(Vn);
     vec3 V = normalize(Vv);
     vec3 L = normalize(Vl);
+
+    vec3 N = texture(NormalMap, uv).xyz * 2.0 - 1.0;
+    N = normalize(N);
 
     vec4 texture1 = texture(T1, uv);
     vec4 texture2 = texture(T2, uv);
 
-    vec4 textureMix = mix(texture1, texture2, clamp(0, 0.0, 0.0));
+    vec4 textureMix = mix(texture1, texture2, clamp(0.5, 0.0, 1.0));
 
     vec3 albedo = textureMix.rgb * u_objColor;
 

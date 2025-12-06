@@ -17,15 +17,17 @@ public:
 
     void setTexture1(Texture2D *texture);
     void setTexture2(Texture2D *texture);
+    void setNormal(Texture2D *texture);
 
     glm::vec3 m_objColor = glm::vec3(1.0f, 0.0f, 0.0f);
-    float m_ka = 0.2f;
-    float m_kd = 0.5f;
+    float m_ka = 0.5f;
+    float m_kd = 0.7f;
     float m_ks = 1.0f;
     float m_shiny = 64.0f;
     float m_time = 0.0f;
     Texture2D *m_texture1;
     Texture2D *m_texture2;
+    Texture2D *m_normal;
 
 protected:
     GLProgram *vp;
@@ -43,6 +45,6 @@ protected:
 
     GLuint l_nbLumiere = -1;
 
-    GLuint l_sampler2d_1 = -1, l_sampler2d_2 = -1;
+    GLuint l_sampler2d_1 = -1, l_sampler2d_2 = -1, l_sampler2d_N = -1;
 
 };

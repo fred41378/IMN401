@@ -20,17 +20,20 @@ bool EngineGL::init() {
 
     // Création d'un materiau de Base
     BaseMaterial *material = new BaseMaterial("IMN401-TP2");
-    TextureMaterial *textureMatBunny = new TextureMaterial("TextureMaterial");
+    TextureMaterial *textureMatBunny = new TextureMaterial("TextureMaterialBunny");
+    TextureMaterial *textureMatSol = new TextureMaterial("TextureMaterialSol");
     PhongMaterial *phongMatSol = new PhongMaterial("phongMatSol");
 
     //Textures
     Texture2D *textureBunny1 = new Texture2D(ObjPath + "Textures/Bunny1.png");
     Texture2D *textureBunny2 = new Texture2D(ObjPath + "Textures/Bunny2.png");
+    Texture2D *textureBunny_normal = new Texture2D(ObjPath + "Textures/Bunny_N.png");
 
     // d'un objet, méthode détaillée
     textureMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
     textureMatBunny->setTexture1(textureBunny1);
     textureMatBunny->setTexture2(textureBunny2);
+    textureMatBunny->setNormal(textureBunny_normal);
     Node *bunny = scene->getNode("Bunny");
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));
     bunny->frame()->scale(glm::vec3(30.0));
@@ -67,7 +70,7 @@ bool EngineGL::init() {
     // sol
     Node *sol = scene->getNode("Sol");
     sol->setModel(scene->m_Models.get<ModelGL>(ObjPath + "wall.obj"));
-    sol->setMaterial(phongMatSol);
+    sol->setMaterial(textureMatSol);
     phongMatSol->setColor(glm::vec3(0.0f, 1.0, 1.0f));
     sol->frame()->scale(glm::vec3(6.0f, 2.0f, 6.0f));
     sol->frame()->translate(glm::vec3(0.0f, -1.15f, 0.0f));

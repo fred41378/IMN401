@@ -13,6 +13,7 @@ out gl_PerVertex {
 layout(location = 0) in vec3 Position;
 layout(location = 2) in vec3 Normal;
 layout(location = 3) in vec3 Texture;
+layout(location = 4) in vec4 Tangent;
 
 out vec3 vertexColor;
 out vec3 Vv;
@@ -41,12 +42,22 @@ uniform vec3 u_posCam;
 void main() {
 
     uv = Texture.xy;
-    
-    Vl = u_posLum - Position;
+    vec3 pos = Position;
 
-    Vv = u_posCam - Position;
-    Vn = Normal;
+    vec3 L = u_posLum - pos;
+    vec3 V = u_posCam - pos;
+
     vec3 N = normalize(Normal);
+    vec3 T = normalize(Tangent.xyz);
+    T = normalize(T - N * dot(N, T));
+    vec3 B = cross(T,N);
+    mat3 TBN = mat3(T,B,N);
+
+    mat3 changementDeRepereT = transpose(TBN);
+
+    Vl = changementDeRepereT * L;
+    Vv = changementDeRepereT * V;
+    Vn = changementDeRepereT * N;
 
     float distance = (length(u_posLapin - Position));
 
