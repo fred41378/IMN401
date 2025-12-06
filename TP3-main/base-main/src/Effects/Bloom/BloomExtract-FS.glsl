@@ -5,7 +5,7 @@
 in vec2 uv;
 uniform sampler2D u_src;
 
-uniform float u_threshold;
+uniform float u_limite;
 uniform float u_softness;
 
 float luminance(vec3 c) {
@@ -16,7 +16,7 @@ void main() {
     vec3 c = texture(u_src, uv).rgb;
     float l = luminance(c);
 
-    float w = smoothstep(u_threshold - u_softness, u_threshold + u_softness, l);
+    float w = smoothstep(u_limite - u_softness, u_limite + u_softness, l);
 
     Color = vec4(c * w, 1.0);
 }

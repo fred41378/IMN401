@@ -10,22 +10,22 @@ public:
 
     void apply(FrameBufferObject *src, FrameBufferObject *target) override;
 
-    float m_threshold = 0.4f;
+    float m_limite = 0.4f;
     float m_softness = 0.5f;
-    float m_intensity = 1.5f;
+    float m_intensite = 1.5f;
 
 private:
     GLProgram *vp = nullptr;
     GLProgram *fpExtract = nullptr; 
     GLProgram *fpCombine = nullptr; 
 
-    GLint l_src_extract = -1;
-    GLint l_threshold = -1;
+    GLint l_src = -1;
+    GLint l_limite = -1;
     GLint l_softness = -1;
 
     GLint l_src_combine = -1;
     GLint l_bloom_combine = -1;
-    GLint l_intensity = -1;
+    GLint l_intensite = -1;
 
     FrameBufferObject *FBO1 = nullptr; 
     FrameBufferObject *FBO2 = nullptr; 
