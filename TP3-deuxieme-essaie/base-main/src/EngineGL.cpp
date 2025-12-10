@@ -27,11 +27,12 @@ bool EngineGL::init() {
     TextureMaterial *textureMatBunny = new TextureMaterial("textureMatBunny");
 
     Texture2D *textureBunny = new Texture2D(ObjPath + "/Textures/Bunny1.png");
+    Texture2D *textureBunny2 = new Texture2D(ObjPath + "/Textures/Bunny2.png");
 
     // d'un objet, méthode détaillée
     textureMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
     textureMatBunny->setTexture1(textureBunny);
-
+    textureMatBunny->setTexture2(textureBunny2);
 
     Node *bunny = scene->getNode("Bunny");
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));

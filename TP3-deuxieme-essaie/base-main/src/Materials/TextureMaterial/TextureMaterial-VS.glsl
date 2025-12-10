@@ -13,6 +13,7 @@ out gl_PerVertex {
 layout(location = 0) in vec3 Position;
 layout(location = 2) in vec3 Normal;
 layout(location = 3) in vec3 coodTex;
+layout(location = 4) in vec4 Tangent;
 
 out vec3 vertexColor;
 out vec3 Vv;
@@ -39,16 +40,22 @@ uniform vec3 u_posLum;
 uniform vec3 u_posCam;
 
 void main() {
-    
-    Vl = u_posLum - Position;
+
+    vec3 N = normalize(Normal);
+    vec3 L = u_posLum - Position;
+    vec3 V = u_posCam - Position;
+    vec3 T = Tangent.xyz;
+
+    vec3 B = N * T;
+
+    mat3 TBN = mat3(T,B,N);
+    TBN = transpose(TBN);
+
+    Vl = TBN * L;
+    Vv = TBN * V;
+    Vn = TBN * N;
 
     Vuv = coodTex;
-
-    Vv = u_posCam - Position;
-    Vn = Normal;
-    vec3 N = normalize(Normal);
-
-    float distance = distance(u_posLapin, Position);
 
     gl_Position = Proj * View * Model * vec4(Position, 1.0);
 }

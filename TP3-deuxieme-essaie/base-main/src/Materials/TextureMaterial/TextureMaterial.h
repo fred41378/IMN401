@@ -15,6 +15,7 @@ public:
 
     void setColor(const glm::vec3 &rgb);
     void setTexture1(Texture2D *texture);
+    void setTexture2(Texture2D *texture);
 
     glm::vec3 m_objColor = glm::vec3(0.0f, 0.0f, 0.0f);
     float m_ka = 0.2f;
@@ -24,7 +25,8 @@ public:
     float m_time = 0.0f;
 
     Texture2D *m_texture1 = nullptr;
-
+    Texture2D *m_texture2 = nullptr;
+    
 protected:
     GLProgram *vp;
     GLProgram *fp;
@@ -37,6 +39,6 @@ protected:
 
     GLuint l_posLum = -1, l_posCam = -1;
 
-    GLuint l_t1 = -1;
+    GLuint l_t1 = -1, l_t2 = -1, l_hasSecondTexture = -1;
 
 };

@@ -15,15 +15,24 @@ uniform float u_kd;
 uniform float u_ks;
 uniform float u_shiny;
 uniform vec3 u_objColor;
+uniform float u_hasSecondTexture;
 
 uniform sampler2D T1;
+uniform sampler2D T2;
 
 void main() {
 
     vec3 N = normalize(Vn);
     vec3 V = normalize(Vv);
+    vec2 uv = Vuv.xy;
 
-    vec3 Texture = texture(T1, Vuv.xy).rgb;
+    vec3 text1 = texture(T1, uv).rgb;
+    vec3 Texture = text1;
+
+    if (u_hasSecondTexture != 0){
+        vec3 text2 = texture(T2, uv).rgb;
+        Texture = mix(text1, text2, clamp(0.5, 0.0, 1.0));
+    }
 
     vec3 objColor = u_objColor;
 

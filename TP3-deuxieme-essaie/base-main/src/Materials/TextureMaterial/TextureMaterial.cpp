@@ -29,7 +29,8 @@ TextureMaterial::TextureMaterial(std::string name) : MaterialGL(name) {
     l_posCam = glGetUniformLocation(vpId, "u_posCam");
 
     l_t1 = glGetUniformLocation(fpId, "T1");
-    
+    l_t2 = glGetUniformLocation(fpId, "T2");
+    l_hasSecondTexture = glGetUniformLocation(fpId, "u_hasSecondTexture");
 }
 
 TextureMaterial::~TextureMaterial() {}
@@ -44,7 +45,12 @@ void TextureMaterial::render(Node *o) {
         glBindTextureUnit(0, m_texture1->getId());
         glProgramUniform1i(fpId, l_t1, 0);
     }
-
+    bool hasTex2 = (m_texture2 != nullptr);
+    if (l_hasSecondTexture >= 0) glProgramUniform1f(fpId, l_hasSecondTexture, hasTex2 ? 1 : 0);
+    if (m_texture2 && l_t2 >= 0) {
+        glBindTextureUnit(1, m_texture2->getId());
+        glProgramUniform1i(fpId, l_t2, 1);
+    }
     o->drawGeometry(GL_TRIANGLES);
     m_ProgramPipeline->release();
 }
@@ -53,9 +59,13 @@ void TextureMaterial::setColor(const glm::vec3 &rgb) {
     m_objColor = rgb;
 }
 
-void TextureMaterial::setTexture1(Texture2D *texture) {
-    m_texture1 = texture;
+void TextureMaterial::setTexture1(Texture2D *texture1) {
+    m_texture1 = texture1;
 } 
+
+void TextureMaterial::setTexture2(Texture2D *texture2) {
+    m_texture2 = texture2;
+}
 
 void TextureMaterial::animate(Node *o, const float elapsedTime) {
 
