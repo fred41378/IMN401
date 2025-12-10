@@ -4,9 +4,10 @@ layout(location = 0) out vec4 Color;
 layout(location = 2) out vec3 Normal;
 
 in vec3 vertexColor;
-in vec3 Vl[3];
+in vec3 Vl;
 in vec3 Vv;
 in vec3 Vn;
+in vec3 Vuv;
 
 uniform int u_nbLumiere;
 uniform float u_ka;
@@ -15,35 +16,30 @@ uniform float u_ks;
 uniform float u_shiny;
 uniform vec3 u_objColor;
 
+uniform sampler2D T1;
+
 void main() {
 
     vec3 N = normalize(Vn);
     vec3 V = normalize(Vv);
 
-    vec3 result = u_ka * u_objColor;
+    vec3 Texture = texture(T1, Vuv.xy).rgb;
 
-    for(int i = 0; i < u_nbLumiere; ++i){
-        vec3 L = normalize(Vl[i]);
-        float NL = max(dot(N, L), 0);
-        vec3 d_color = u_objColor;
-        if(i == 0){
-        d_color = vec3(1.0,0.0,0.0);
-        }
-        if(i == 1){
-        d_color = vec3(0.0,1.0,0.0);
-        }
-        if(i == 2){
-        d_color = vec3(0.0,0.0,1.0);
-        }
-        vec3 difus = u_kd * NL * d_color;
+    vec3 objColor = u_objColor;
 
-        vec3 R = reflect(-L, N);
-        float RV = max(dot(R, V), 0.0);
-        float specPow = pow(RV, u_shiny);
-        vec3 specular = u_ks * specPow * vec3(1.0);
-        
-        result += difus + specular;
-    }
+    vec3 ambiant = u_ka * Texture;
+
+    vec3 L = normalize(Vl);
+    float NL = max(dot(N, L), 0);
+    vec3 d_color = objColor;
+    vec3 difus = u_kd * NL * Texture;
+
+    vec3 R = reflect(-L, N);
+    float RV = max(dot(R, V), 0.0);
+    float specPow = pow(RV, u_shiny);
+    vec3 specular = u_ks * specPow * vec3(1.0);
+    
+    vec3 result = ambiant + difus + specular;
 
     Color = vec4(result, 1.0);
 }

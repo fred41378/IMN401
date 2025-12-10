@@ -1,4 +1,5 @@
 #include "MaterialGL.h"
+#include <Texture2D.h>
 
 class TextureMaterial : public MaterialGL {
 public:
@@ -13,6 +14,7 @@ public:
     virtual void displayInterface() {};
 
     void setColor(const glm::vec3 &rgb);
+    void setTexture1(Texture2D *texture);
 
     glm::vec3 m_objColor = glm::vec3(0.0f, 0.0f, 0.0f);
     float m_ka = 0.2f;
@@ -20,6 +22,8 @@ public:
     float m_ks = 1.0f;
     float m_shiny = 64.0f;
     float m_time = 0.0f;
+
+    Texture2D *m_texture1 = nullptr;
 
 protected:
     GLProgram *vp;
@@ -31,9 +35,8 @@ protected:
     GLuint l_ka = -1, l_kd = -1, l_ks = -1, l_shiny = -1,
            l_objColor = -1;
 
-    GLuint l_id = -1;
-
     GLuint l_posLum = -1, l_posCam = -1;
 
-    GLuint l_nbLumiere = -1;
+    GLuint l_t1 = -1;
+
 };

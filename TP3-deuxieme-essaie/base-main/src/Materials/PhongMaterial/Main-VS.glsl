@@ -38,7 +38,7 @@ uniform vec3 u_posCam;
 
 void main() {
     
-    for(int i = 0; i < 4; ++i){
+    for(int i = 0; i < 3; ++i){
         Vl[i] = u_posLum[i] - Position;
     }
 

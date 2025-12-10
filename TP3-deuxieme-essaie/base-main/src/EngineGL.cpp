@@ -5,6 +5,7 @@
 #include "Materials/BaseMaterial/BaseMaterial.h"
 #include "Materials/RotationMaterial/RotationMaterial.h"
 #include "Materials/PhongMaterial/PhongMaterial.h"
+#include "Materials/TextureMaterial/TextureMaterial.h"
 
 #include "Texture2D.h"
 
@@ -22,12 +23,20 @@ bool EngineGL::init() {
     PhongMaterial *phongMatBunny = new PhongMaterial("PhongMaterial");
     PhongMaterial *phongMatSol = new PhongMaterial("phongMatSol");
 
+    //Textures 
+    TextureMaterial *textureMatBunny = new TextureMaterial("textureMatBunny");
+
+    Texture2D *textureBunny = new Texture2D(ObjPath + "/Textures/Bunny1.png");
+
     // d'un objet, méthode détaillée
+    textureMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    textureMatBunny->setTexture1(textureBunny);
+
+
     Node *bunny = scene->getNode("Bunny");
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));
     bunny->frame()->scale(glm::vec3(30.0));
-    bunny->setMaterial(phongMatBunny);
-    phongMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    bunny->setMaterial(textureMatBunny);
     scene->getSceneNode()->adopt(bunny);
 
     Node *L1 = scene->getNode("Light1");
@@ -36,26 +45,12 @@ bool EngineGL::init() {
     L1->frame()->translate(glm::vec3(10.0f, 2.0f, 0.0f));
     L1->frame()->scale(glm::vec3(2.0f));
 
-    Node *L2 = scene->getNode("Light2");
-    L2->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
-    L2->setMaterial(new PhongMaterial("Lumiere2"));
-    L2->frame()->translate(glm::vec3(-10.0f, 2.0f, 0.0f));
-    L2->frame()->scale(glm::vec3(2.0f));
-
-    Node *L3 = scene->getNode("Light3");
-    L3->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Sphere.obj"));
-    L3->setMaterial(new PhongMaterial("Lumiere3"));
-    L3->frame()->translate(glm::vec3(0.0f, 2.0f, 10.0f));
-    L3->frame()->scale(glm::vec3(2.0f));
-
 
     Node *A = new Node("A");
     A->setMaterial(new RotationMaterial("RotA"));
     A->frame()->scale(glm::vec3(1.0f / 30.0f));
     bunny->adopt(A);
     A->adopt(L1);
-    A->adopt(L2);
-    A->adopt(L3);
 
     // sol
     Node *sol = scene->getNode("Sol");

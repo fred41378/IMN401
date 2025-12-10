@@ -12,11 +12,13 @@ out gl_PerVertex {
 
 layout(location = 0) in vec3 Position;
 layout(location = 2) in vec3 Normal;
+layout(location = 3) in vec3 coodTex;
 
 out vec3 vertexColor;
 out vec3 Vv;
-out vec3 Vl[3];
+out vec3 Vl;
 out vec3 Vn;
+out vec3 Vuv;
 
 uniform float u_time;
 
@@ -32,15 +34,15 @@ uniform float u_id;
 
 uniform vec3 u_posLapin;
 
-uniform vec3 u_posLum[3];
+uniform vec3 u_posLum;
 
 uniform vec3 u_posCam;
 
 void main() {
     
-    for(int i = 0; i < 4; ++i){
-        Vl[i] = u_posLum[i] - Position;
-    }
+    Vl = u_posLum - Position;
+
+    Vuv = coodTex;
 
     Vv = u_posCam - Position;
     Vn = Normal;
@@ -48,14 +50,5 @@ void main() {
 
     float distance = distance(u_posLapin, Position);
 
-    if(distance > 2.0 && u_id == 1.0){
-        float disp = 0.5 * sin(3.14 * 0.07/1000.0 * u_time);
-
-        vec3 horizDir = vec3(Position.x, 0.0, Position.z);
-        vec3 displacedPos = Position + N * disp;
-        gl_Position = Proj * View * Model * vec4(displacedPos, 1.0);
-    }
-    else{
-        gl_Position = Proj * View * Model * vec4(Position, 1.0);
-    }
+    gl_Position = Proj * View * Model * vec4(Position, 1.0);
 }
