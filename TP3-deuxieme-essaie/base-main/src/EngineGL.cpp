@@ -25,14 +25,20 @@ bool EngineGL::init() {
 
     //Textures 
     TextureMaterial *textureMatBunny = new TextureMaterial("textureMatBunny");
+    TextureMaterial *textureMatSol = new TextureMaterial("textureMatSol");
 
     Texture2D *textureBunny = new Texture2D(ObjPath + "/Textures/Bunny1.png");
     Texture2D *textureBunny2 = new Texture2D(ObjPath + "/Textures/Bunny2.png");
+    Texture2D *normalBunny = new Texture2D(ObjPath + "/Textures/Bunny_N.png");
+
+    Texture2D *textureSol = new Texture2D(ObjPath + "/Textures/BrickL.png");
+    Texture2D *normalSol = new Texture2D(ObjPath + "/Textures/BrickL_N.png");
 
     // d'un objet, méthode détaillée
     textureMatBunny->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
     textureMatBunny->setTexture1(textureBunny);
     textureMatBunny->setTexture2(textureBunny2);
+    textureMatBunny->setNormalMap(normalBunny);
 
     Node *bunny = scene->getNode("Bunny");
     bunny->setModel(scene->m_Models.get<ModelGL>(ObjPath + "Bunny.obj"));
@@ -56,8 +62,10 @@ bool EngineGL::init() {
     // sol
     Node *sol = scene->getNode("Sol");
     sol->setModel(scene->m_Models.get<ModelGL>(ObjPath + "wall.obj"));
-    sol->setMaterial(phongMatSol);
-    phongMatSol->setColor(glm::vec3(0.0f, 1.0, 1.0f));
+    sol->setMaterial(textureMatSol);
+    textureMatSol->setColor(glm::vec3(0.0f, 1.0, 1.0f));
+    textureMatSol->setTexture1(textureSol);
+    textureMatSol->setNormalMap(normalSol);
     sol->frame()->scale(glm::vec3(6.0f, 2.0f, 6.0f));
     sol->frame()->translate(glm::vec3(0.0f, -1.15f, 0.0f));
 
@@ -76,6 +84,11 @@ bool EngineGL::init() {
 
     L->frame()->scale(glm::vec3(2.0f));*/
 
+    myFBO = new FrameBufferObject("myFBO", m_Width, m_Height);
+    display = new Display("myDisplay");
+    flou = new Flou("myFlou");
+    bloom = new Bloom("myBloom");
+
     setupEngine();
     return (true);
 }
@@ -83,8 +96,14 @@ bool EngineGL::init() {
 void EngineGL::render() {
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    myFBO->enable();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (unsigned int i = 0; i < allNodes->nodes.size(); i++)
         allNodes->nodes[i]->render();
+    myFBO->disable();
+    //display->apply(myFBO, NULL);
+    //flou->apply(myFBO, NULL);
+    bloom->apply(myFBO, NULL);
 }
 
 void EngineGL::animate(const float elapsedTime) {

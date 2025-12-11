@@ -16,15 +16,23 @@ uniform float u_ks;
 uniform float u_shiny;
 uniform vec3 u_objColor;
 uniform float u_hasSecondTexture;
+uniform float u_hasNormal;
 
 uniform sampler2D T1;
 uniform sampler2D T2;
+uniform sampler2D normalMap;
 
 void main() {
 
     vec3 N = normalize(Vn);
     vec3 V = normalize(Vv);
+    vec3 L = normalize(Vl);
     vec2 uv = Vuv.xy;
+
+    if (u_hasNormal != 0){
+        N = texture(normalMap, uv).rgb * 2.0 - 1.0;
+        N = normalize(N);
+    }
 
     vec3 text1 = texture(T1, uv).rgb;
     vec3 Texture = text1;
@@ -38,7 +46,6 @@ void main() {
 
     vec3 ambiant = u_ka * Texture;
 
-    vec3 L = normalize(Vl);
     float NL = max(dot(N, L), 0);
     vec3 d_color = objColor;
     vec3 difus = u_kd * NL * Texture;

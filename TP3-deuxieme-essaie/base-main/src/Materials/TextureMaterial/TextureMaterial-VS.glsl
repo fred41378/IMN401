@@ -44,9 +44,9 @@ void main() {
     vec3 N = normalize(Normal);
     vec3 L = u_posLum - Position;
     vec3 V = u_posCam - Position;
-    vec3 T = Tangent.xyz;
+    vec3 T = normalize(Tangent.xyz);
 
-    vec3 B = N * T;
+    vec3 B = cross(N,T);
 
     mat3 TBN = mat3(T,B,N);
     TBN = transpose(TBN);

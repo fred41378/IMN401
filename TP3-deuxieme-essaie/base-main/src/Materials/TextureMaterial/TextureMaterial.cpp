@@ -30,6 +30,8 @@ TextureMaterial::TextureMaterial(std::string name) : MaterialGL(name) {
 
     l_t1 = glGetUniformLocation(fpId, "T1");
     l_t2 = glGetUniformLocation(fpId, "T2");
+    l_normalMap = glGetUniformLocation(fpId, "normalMap");
+    l_hasNormal = glGetUniformLocation(fpId, "u_hasNormal");
     l_hasSecondTexture = glGetUniformLocation(fpId, "u_hasSecondTexture");
 }
 
@@ -51,6 +53,12 @@ void TextureMaterial::render(Node *o) {
         glBindTextureUnit(1, m_texture2->getId());
         glProgramUniform1i(fpId, l_t2, 1);
     }
+    bool hasNormal = (m_normalMap != nullptr);   
+    if (l_hasNormal >= 0) glProgramUniform1f(fpId, l_hasNormal, hasNormal ? 1 : 0);
+    if (m_normalMap && l_normalMap >= 0) {
+        glBindTextureUnit(2, m_normalMap->getId());
+        glProgramUniform1i(fpId, l_normalMap, 2);
+    }
     o->drawGeometry(GL_TRIANGLES);
     m_ProgramPipeline->release();
 }
@@ -65,6 +73,10 @@ void TextureMaterial::setTexture1(Texture2D *texture1) {
 
 void TextureMaterial::setTexture2(Texture2D *texture2) {
     m_texture2 = texture2;
+}
+
+void TextureMaterial::setNormalMap(Texture2D *normalMap) {
+    m_normalMap = normalMap;
 }
 
 void TextureMaterial::animate(Node *o, const float elapsedTime) {

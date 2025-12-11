@@ -16,6 +16,7 @@ public:
     void setColor(const glm::vec3 &rgb);
     void setTexture1(Texture2D *texture);
     void setTexture2(Texture2D *texture);
+    void setNormalMap(Texture2D *texture);
 
     glm::vec3 m_objColor = glm::vec3(0.0f, 0.0f, 0.0f);
     float m_ka = 0.2f;
@@ -26,6 +27,7 @@ public:
 
     Texture2D *m_texture1 = nullptr;
     Texture2D *m_texture2 = nullptr;
+    Texture2D *m_normalMap = nullptr;
     
 protected:
     GLProgram *vp;
@@ -39,6 +41,7 @@ protected:
 
     GLuint l_posLum = -1, l_posCam = -1;
 
-    GLuint l_t1 = -1, l_t2 = -1, l_hasSecondTexture = -1;
+    GLuint l_t1 = -1, l_t2 = -1, l_normalMap = -1;
+    GLuint l_hasNormal = -1, l_hasSecondTexture = -1;
 
 };
